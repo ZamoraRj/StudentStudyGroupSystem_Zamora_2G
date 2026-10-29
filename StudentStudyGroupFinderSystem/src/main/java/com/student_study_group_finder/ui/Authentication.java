@@ -1,6 +1,6 @@
 package com.student_study_group_finder.ui;
 
-import com.student_study_group_finder.dao.StudentDao;
+import com.student_study_group_finder.dao.*;
 import com.student_study_group_finder.model.Student;
 
 import java.util.Scanner;
@@ -8,10 +8,20 @@ import java.util.Optional;
 
 public class Authentication {
     private final StudentDao studentDao;
+    private final StudyGroupDao studyGroupDao;
+    private final GroupMembershipDao membershipDao;
+    private final StudySessionDao sessionDao;
+    private final ActivityLogDao activityLogDao;
     private final Scanner scanner;
 
-    public Authentication(StudentDao studentDao, Scanner scanner) {
+    public Authentication(StudentDao studentDao, StudyGroupDao studyGroupDao,
+                           GroupMembershipDao membershipDao, StudySessionDao sessionDao,
+                           ActivityLogDao activityLogDao, Scanner scanner) {
         this.studentDao = studentDao;
+        this.studyGroupDao = studyGroupDao;
+        this.membershipDao = membershipDao;
+        this.sessionDao = sessionDao;
+        this.activityLogDao = activityLogDao;
         this.scanner = scanner;
     }
 
@@ -94,14 +104,18 @@ public class Authentication {
         }
 
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
-        String dateRegistered = now.toString();
-        String createdAt = now.toString();
-        String updatedAt = now.toString();
+        String dateRegistered = now.toLocalDate().toString();
+        String timeRegistered = now.toLocalTime().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString();
 
-        boolean success = studentDao.register(fullName, email, password, course, yearLevel, role, dateRegistered, createdAt, updatedAt);
+        boolean success = studentDao.register(fullName, email, password, course, yearLevel, role, dateRegistered, timeRegistered);
         if (success) {
             System.out.println("\n✅ Account registered successfully!");
             System.out.println("Note: Account status is default to 'PENDING'. Admin approval required before login.");
+            int newId = studentDao.findIdByEmail(email);
+            if (newId != -1) {
+                activityLogDao.logActivity(newId, "REGISTER",
+                        "Registered new " + role + " account", dateRegistered, timeRegistered);
+            }
         } else {
             System.out.println("\n❌ Registration failed. Please try again.");
         }
@@ -130,6 +144,22 @@ public class Authentication {
         }
 
         System.out.println("\n✅ Login successful! Welcome, " + student.fullName() + " (" + student.role() + ")");
+        java.time.LocalDateTime loginTime = java.time.LocalDateTime.now();
+        activityLogDao.logActivity(student.studentId(), "LOGIN",
+                "User logged in", loginTime.toLocalDate().toString(), loginTime.toLocalTime().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString());
 
+        // Route to role-specific menu
+        if ("ADMINISTRATOR".equalsIgnoreCase(student.role())) {
+            AdminMenu adminMenu = new AdminMenu(student, studentDao, studyGroupDao, membershipDao, sessionDao, activityLogDao, scanner);
+            adminMenu.start();
+        } else if ("STUDY_GROUP_LEADER".equalsIgnoreCase(student.role())) {
+            StudyGroupLeaderMenu leaderMenu = new StudyGroupLeaderMenu(student, studentDao, studyGroupDao, membershipDao, sessionDao, activityLogDao, scanner);
+            leaderMenu.start();
+        } else if ("STUDENT".equalsIgnoreCase(student.role())) {
+            StudentMenu studentMenu = new StudentMenu(student, studentDao, studyGroupDao, membershipDao, sessionDao, activityLogDao, scanner);
+            studentMenu.start();
+        } else {
+            System.out.println("Unknown role: " + student.role());
+        }
     }
 }

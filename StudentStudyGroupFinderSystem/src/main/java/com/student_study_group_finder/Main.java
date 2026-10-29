@@ -1,7 +1,6 @@
 package com.student_study_group_finder;
 
-import com.student_study_group_finder.dao.DatabaseInitializer;
-import com.student_study_group_finder.dao.StudentDao;
+import com.student_study_group_finder.dao.*;
 import com.student_study_group_finder.ui.Authentication;
 
 import java.util.Scanner;
@@ -18,9 +17,13 @@ public class Main {
         // Step 2: Instantiate shared DAOs & Utilities
         Scanner scanner = new Scanner(System.in);
         StudentDao studentDao = new StudentDao();
+        StudyGroupDao studyGroupDao = new StudyGroupDao();
+        GroupMembershipDao membershipDao = new GroupMembershipDao();
+        StudySessionDao sessionDao = new StudySessionDao();
+        ActivityLogDao activityLogDao = new ActivityLogDao();
 
         // Step 3: Delegate execution to Authentication
-        Authentication authentication = new Authentication(studentDao, scanner);
+        Authentication authentication = new Authentication(studentDao, studyGroupDao, membershipDao, sessionDao, activityLogDao, scanner);
         authentication.start();
     }
 }

@@ -12,7 +12,6 @@ public record Student(
         String course,
         Integer yearLevel,
         String dateRegistered,
-        String accountStatus,
-        String createdAt,
-        String updatedAt) {
+        String timeRegistered,
+        String accountStatus) {
 }

@@ -1,0 +1,75 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R ] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 1668 >>
+stream
+BT
+/F2 16 Tf 50 780 Td (STUDENT STUDY GROUP ACTIVITY REPORT) Tj
+/F1 10 Tf 0 -14 Td (Generated: 2026-10-29T20:15:36.771585600) Tj
+/F1 10 Tf 0 -14 Td () Tj
+/F2 12 Tf 0 -16 Td (USER STATISTICS) Tj
+/F1 10 Tf 0 -14 Td (  Total Registered Students : 4) Tj
+/F1 10 Tf 0 -14 Td (  Students : 2) Tj
+/F1 10 Tf 0 -14 Td (  Study Group Leaders : 1) Tj
+/F1 10 Tf 0 -14 Td (  Administrators : 1) Tj
+/F1 10 Tf 0 -14 Td (  Pending Approvals : 1) Tj
+/F1 10 Tf 0 -14 Td (  Approved Users : 3) Tj
+/F1 10 Tf 0 -14 Td () Tj
+/F2 12 Tf 0 -16 Td (GROUP STATISTICS) Tj
+/F1 10 Tf 0 -14 Td (  Total Study Groups : 1) Tj
+/F1 10 Tf 0 -14 Td (  Total Active Study Groups : 1) Tj
+/F1 10 Tf 0 -14 Td (  Inactive Groups : 0) Tj
+/F1 10 Tf 0 -14 Td (  Archived Groups : 0) Tj
+/F1 10 Tf 0 -14 Td (  Average Members per Group : 2.0) Tj
+/F1 10 Tf 0 -14 Td (  Total Active Memberships : 2) Tj
+/F1 10 Tf 0 -14 Td (  Capacity Utilization : 6.7%) Tj
+/F1 10 Tf 0 -14 Td () Tj
+/F2 12 Tf 0 -16 Td (ACTIVE GROUPS PER SUBJECT) Tj
+/F1 10 Tf 0 -14 Td (  economics : 1) Tj
+/F1 10 Tf 0 -14 Td () Tj
+/F2 12 Tf 0 -16 Td (SESSION STATISTICS) Tj
+/F1 10 Tf 0 -14 Td (  Total Scheduled Study Sessions : 1) Tj
+/F1 10 Tf 0 -14 Td (  Scheduled : 1) Tj
+/F1 10 Tf 0 -14 Td (  In Progress : 0) Tj
+/F1 10 Tf 0 -14 Td (  Total Completed Study Sessions : 0) Tj
+/F1 10 Tf 0 -14 Td (  Cancelled : 0) Tj
+/F1 10 Tf 0 -14 Td () Tj
+/F2 12 Tf 0 -16 Td (ACTIVITY SUMMARY) Tj
+/F1 10 Tf 0 -14 Td (  LOGIN : 8) Tj
+/F1 10 Tf 0 -14 Td (  REGISTER : 4) Tj
+/F1 10 Tf 0 -14 Td (  LOGOUT : 3) Tj
+/F1 10 Tf 0 -14 Td (  JOIN_GROUP : 1) Tj
+/F1 10 Tf 0 -14 Td (  CREATE_SESSION : 1) Tj
+/F1 10 Tf 0 -14 Td (  CREATE_GROUP : 1) Tj
+/F1 10 Tf 0 -14 Td () Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000116 00000 n 
+0000000186 00000 n 
+0000000261 00000 n 
+0000000397 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+2117
+%%EOF
