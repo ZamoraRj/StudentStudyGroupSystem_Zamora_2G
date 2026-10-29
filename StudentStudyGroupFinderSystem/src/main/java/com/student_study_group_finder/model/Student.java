@@ -1,7 +1,7 @@
-package model;
+package com.student_study_group_finder.model;
 
 /**
- * Immutable data model for a row in the students table.
+ * Immutable data com.student_study_group_finder.model for a row in the students table.
  */
 public record Student(
         int studentId,

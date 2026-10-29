@@ -1,32 +1,22 @@
-package dao;
+package com.student_study_group_finder.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Handles the SQLite connection and creates the students table.
+ * Ensures all required database tables exist automatically before the CLI menu starts.
  */
-public class DatabaseConnection {
+public class DatabaseInitializer {
 
-    private static final String URL = "jdbc:sqlite:studygroupfinder.db";
-
-    private DatabaseConnection() {
-    }
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL);
-    }
-
-    public static void initialize() {
+    public static void initializeDatabase() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS students (
                     student_id      INTEGER PRIMARY KEY AUTOINCREMENT,
                     full_name       TEXT NOT NULL,
                     email           TEXT NOT NULL UNIQUE,
-                    password_hash   TEXT NOT NULL,
+                    password_hash        TEXT NOT NULL,
                     course          TEXT,
                     year_level      INTEGER,
                     role            TEXT NOT NULL DEFAULT 'STUDENT'
@@ -37,9 +27,12 @@ public class DatabaseConnection {
                     updated_at      TEXT
                 )
                 """;
-        try (Connection conn = getConnection();
+
+        try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement()) {
+
             stmt.execute(sql);
+
             if (!hasColumn(stmt, "role")) {
                 stmt.execute("""
                         ALTER TABLE students
@@ -47,8 +40,12 @@ public class DatabaseConnection {
                             CHECK(role IN ('STUDENT', 'STUDY_GROUP_LEADER', 'ADMINISTRATOR'))
                         """);
             }
+
+            System.out.println("[Database Initializer] Database tables verified and initialized successfully.");
+
         } catch (SQLException e) {
-            System.out.println("Database setup failed: " + e.getMessage());
+            throw new IllegalStateException(
+                    "Database initialization failed; the application cannot start.", e);
         }
     }
 

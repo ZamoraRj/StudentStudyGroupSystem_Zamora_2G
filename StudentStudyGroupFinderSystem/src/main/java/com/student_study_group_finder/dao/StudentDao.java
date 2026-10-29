@@ -1,6 +1,6 @@
-package dao;
+package com.student_study_group_finder.dao;
 
-import model.Student;
+import com.student_study_group_finder.model.Student;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
