@@ -67,7 +67,9 @@ public class StudyGroupLeaderMenu {
     private void groupManagementMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- GROUP MANAGEMENT ---");
+            System.out.println("\n=========================================");
+            System.out.println("             GROUP MANAGEMENT            ");
+            System.out.println("=========================================");
             System.out.println("[1] Create New Study Group");
             System.out.println("[2] View My Study Groups");
             System.out.println("[3] Update Group Information");
@@ -91,7 +93,9 @@ public class StudyGroupLeaderMenu {
 
     /** Create a new study group. */
     private void createGroup() {
-        System.out.println("\n--- CREATE NEW STUDY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("          CREATE NEW STUDY GROUP         ");
+        System.out.println("=========================================");
         System.out.print("Group Name: ");
         String groupName = scanner.nextLine().trim();
         if (groupName.isEmpty()) {
@@ -149,7 +153,9 @@ public class StudyGroupLeaderMenu {
 
     /** Delete or deactivate one of the leader's own groups. */
     private void deleteOrDeactivateGroup() {
-        System.out.println("\n--- DELETE / DEACTIVATE STUDY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("     DELETE / DEACTIVATE STUDY GROUP     ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -223,7 +229,9 @@ public class StudyGroupLeaderMenu {
 
     /** View all groups led by this user. */
     private void viewMyGroups() {
-        System.out.println("\n--- MY STUDY GROUPS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             MY STUDY GROUPS             ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -236,7 +244,9 @@ public class StudyGroupLeaderMenu {
 
     /** Update information for one of the leader's groups. */
     private void updateGroupInfo() {
-        System.out.println("\n--- UPDATE GROUP INFORMATION ---");
+        System.out.println("\n=========================================");
+        System.out.println("         UPDATE GROUP INFORMATION        ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -320,7 +330,9 @@ public class StudyGroupLeaderMenu {
 
     /** Manage members of a group (view, remove, promote). */
     private void manageMembers() {
-        System.out.println("\n--- MANAGE GROUP MEMBERS ---");
+        System.out.println("\n=========================================");
+        System.out.println("           MANAGE GROUP MEMBERS          ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -441,7 +453,9 @@ public class StudyGroupLeaderMenu {
 
     /** Create a new study session for one of the leader's groups. */
     private void createSession() {
-        System.out.println("\n--- CREATE STUDY SESSION ---");
+        System.out.println("\n=========================================");
+        System.out.println("           CREATE STUDY SESSION          ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -530,7 +544,9 @@ public class StudyGroupLeaderMenu {
     private void manageSessions() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- MANAGE STUDY SESSIONS ---");
+            System.out.println("\n=========================================");
+            System.out.println("          MANAGE STUDY SESSIONS          ");
+            System.out.println("=========================================");
             System.out.println("[1] Create Study Session");
             System.out.println("[2] View & Edit Sessions");
             System.out.println("[3] Back");
@@ -548,7 +564,9 @@ public class StudyGroupLeaderMenu {
 
     /** View sessions and perform edit actions (update, change status, delete). */
     private void viewAndEditSessions() {
-        System.out.println("\n--- VIEW & EDIT SESSIONS ---");
+        System.out.println("\n=========================================");
+        System.out.println("           VIEW & EDIT SESSIONS          ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -758,7 +776,9 @@ public class StudyGroupLeaderMenu {
 
     /** View group activities (activity logs). */
     private void viewActivities() {
-        System.out.println("\n--- GROUP ACTIVITIES ---");
+        System.out.println("\n=========================================");
+        System.out.println("             GROUP ACTIVITIES            ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getGroupsByLeader(leader.studentId());
 
         if (groups.isEmpty()) {
@@ -826,7 +846,9 @@ public class StudyGroupLeaderMenu {
 
     /** View leader's profile. */
     private void viewProfile() {
-        System.out.println("\n--- MY PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("                MY PROFILE               ");
+        System.out.println("=========================================");
         String course = leader.course() != null ? truncate(leader.course(), 30) : "N/A";
         String yearLevel = leader.yearLevel() != null ? String.valueOf(leader.yearLevel()) : "N/A";
         // Layout help: "%-14s" = text column 14 wide ("%-30s" = 30 wide).
@@ -860,7 +882,9 @@ public class StudyGroupLeaderMenu {
 
     /** Changes the account password after confirming the current one. */
     private void changePassword() {
-        System.out.println("\n--- CHANGE PASSWORD ---");
+        System.out.println("\n=========================================");
+        System.out.println("             CHANGE PASSWORD             ");
+        System.out.println("=========================================");
         System.out.print("Current Password: ");
         String current = scanner.nextLine().trim();
         if (!studentDao.checkPassword(leader.studentId(), current)) {
@@ -894,7 +918,9 @@ public class StudyGroupLeaderMenu {
 
     /** Update leader's profile information. */
     private void updateProfile() {
-        System.out.println("\n--- UPDATE PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("              UPDATE PROFILE             ");
+        System.out.println("=========================================");
         System.out.print("New Full Name (or press Enter to keep): ");
         String newName = scanner.nextLine().trim();
         if (newName.isEmpty()) newName = leader.fullName();

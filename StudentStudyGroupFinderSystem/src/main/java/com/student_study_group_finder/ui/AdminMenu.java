@@ -35,7 +35,7 @@ public class AdminMenu {
         boolean running = true;
         while (running) {
             System.out.println("\n=========================================");
-            System.out.println("             ADMINISTRATION MENU             ");
+            System.out.println("           ADMINISTRATION MENU             ");
             System.out.println("=========================================");
             System.out.println("[1] Manage Users");
             System.out.println("[2] Manage Study Groups");
@@ -71,7 +71,9 @@ public class AdminMenu {
 
     /** View and manage the logged-in admin's own profile. */
     private void viewMyProfile() {
-        System.out.println("\n--- MY PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("                MY PROFILE               ");
+        System.out.println("=========================================");
         Student admin = studentDao.getUserById(currentAdmin.studentId());
         if (admin == null) {
             System.out.println("Profile not found.");
@@ -113,7 +115,9 @@ public class AdminMenu {
 
     /** Update the logged-in admin's own profile information. */
     private void updateMyProfile() {
-        System.out.println("\n--- UPDATE PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("              UPDATE PROFILE             ");
+        System.out.println("=========================================");
         System.out.print("New Full Name (or press Enter to keep): ");
         String newName = scanner.nextLine().trim();
         if (newName.isEmpty()) newName = currentAdmin.fullName();
@@ -145,7 +149,9 @@ public class AdminMenu {
 
     /** Change the logged-in admin's own password after confirming the current one. */
     private void changeMyPassword() {
-        System.out.println("\n--- CHANGE PASSWORD ---");
+        System.out.println("\n=========================================");
+        System.out.println("             CHANGE PASSWORD             ");
+        System.out.println("=========================================");
         System.out.print("Current Password: ");
         String current = scanner.nextLine().trim();
         if (!studentDao.checkPassword(currentAdmin.studentId(), current)) {
@@ -182,14 +188,17 @@ public class AdminMenu {
     private void userManagementMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- USER MANAGEMENT ---");
+            System.out.println("\n=========================================");
+            System.out.println("             USER MANAGEMENT             ");
+            System.out.println("=========================================");
             System.out.println("[1] View All System Users");
             System.out.println("[2] View Pending Registrations");
             System.out.println("[3] Approve User Account");
             System.out.println("[4] Deactivate User Account");
             System.out.println("[5] Reset User Password");
             System.out.println("[6] View User Profile");
-            System.out.println("[7] Back");
+            System.out.println("[7] Update User Role & Status");
+            System.out.println("[8] Back");
             System.out.print("Select an option: ");
 
             String choice = scanner.nextLine().trim();
@@ -200,7 +209,8 @@ public class AdminMenu {
                 case "4" -> deactivateUserAccount();
                 case "5" -> resetUserPassword();
                 case "6" -> viewUserProfile();
-                case "7" -> running = false;
+                case "7" -> updateUserRoleAndStatus();
+                case "8" -> running = false;
                 default -> System.out.println("Invalid selection.");
             }
         }
@@ -208,7 +218,9 @@ public class AdminMenu {
 
     /** Displays all registered users in a formatted table. */
     private void viewAllUsers() {
-        System.out.println("\n--- ALL SYSTEM USERS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             ALL SYSTEM USERS            ");
+        System.out.println("=========================================");
         List<Student> users = studentDao.getAllUsers();
 
         if (users.isEmpty()) {
@@ -221,7 +233,9 @@ public class AdminMenu {
 
     /** Displays all pending (unapproved) users in a formatted table. */
     private void viewPendingRegistrations() {
-        System.out.println("\n--- PENDING REGISTRATIONS ---");
+        System.out.println("\n=========================================");
+        System.out.println("          PENDING REGISTRATIONS          ");
+        System.out.println("=========================================");
         List<Student> users = studentDao.getPendingUsers();
 
         if (users.isEmpty()) {
@@ -234,7 +248,9 @@ public class AdminMenu {
 
     /** Prompts for a Target User ID, verifies it exists in pending list, and approves the account. */
     private void approveUserAccount() {
-        System.out.println("\n--- APPROVE USER ACCOUNT ---");
+        System.out.println("\n=========================================");
+        System.out.println("           APPROVE USER ACCOUNT          ");
+        System.out.println("=========================================");
         List<Student> pending = studentDao.getPendingUsers();
 
         if (pending.isEmpty()) {
@@ -287,7 +303,9 @@ public class AdminMenu {
 
     /** Prompts for a Target User ID and deactivates the account. */
     private void deactivateUserAccount() {
-        System.out.println("\n--- DEACTIVATE USER ACCOUNT ---");
+        System.out.println("\n=========================================");
+        System.out.println("         DEACTIVATE USER ACCOUNT         ");
+        System.out.println("=========================================");
         List<Student> users = studentDao.getAllUsers();
 
         // Filter out already deactivated and pending users
@@ -348,7 +366,9 @@ public class AdminMenu {
 
     /** Prompts for a Target User ID and sets a new password for that account. */
     private void resetUserPassword() {
-        System.out.println("\n--- RESET USER PASSWORD ---");
+        System.out.println("\n=========================================");
+        System.out.println("           RESET USER PASSWORD           ");
+        System.out.println("=========================================");
         List<Student> users = studentDao.getAllUsers();
 
         if (users.isEmpty()) {
@@ -404,9 +424,122 @@ public class AdminMenu {
         }
     }
 
+    /** Reads a whole number. Letters and symbols re-prompt instead of crashing. */
+    private int readIntInput(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+
+    /** Reads a role. Any case, spaces, underscores, or hyphens accepted. 0 cancels. */
+    private String readValidRole() {
+        while (true) {
+            System.out.print("Enter new role (STUDENT, STUDY_GROUP_LEADER, ADMINISTRATOR) or 0 to cancel: ");
+            String raw = scanner.nextLine().trim();
+            if (raw.equals("0")) {
+                return null;
+            }
+            String input = raw.toUpperCase().replaceAll("[\\s_\\-]+", "");
+            if (input.equals("STUDENT")) {
+                return "STUDENT";
+            }
+            if (input.equals("STUDYGROUPLEADER")) {
+                return "STUDY_GROUP_LEADER";
+            }
+            if (input.equals("ADMINISTRATOR")) {
+                return "ADMINISTRATOR";
+            }
+            System.out.println("Invalid role. Please enter STUDENT, STUDY_GROUP_LEADER, or ADMINISTRATOR.");
+        }
+    }
+
+    /** Reads a status. Only APPROVED or PENDING accepted. 0 cancels. */
+    private String readValidStatus() {
+        while (true) {
+            System.out.print("Enter new status (APPROVED, PENDING) or 0 to cancel: ");
+            String input = scanner.nextLine().trim().toUpperCase();
+            if (input.equals("0")) {
+                return null;
+            }
+            if (input.equals("APPROVED") || input.equals("PENDING")) {
+                return input;
+            }
+            System.out.println("Invalid status. Please enter APPROVED or PENDING.");
+        }
+    }
+
+    /** Displays all users, then updates one user's role and status. Never your own account. */
+    private void updateUserRoleAndStatus() {
+        System.out.println("\n=========================================");
+        System.out.println("        UPDATE USER ROLE & STATUS        ");
+        System.out.println("=========================================");
+        List<Student> users = studentDao.getAllUsers();
+
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+            return;
+        }
+
+        printUserTable(users);
+
+        int targetId = readIntInput("Enter Target User ID (0 to cancel): ");
+        if (targetId == 0) {
+            System.out.println("Update cancelled.");
+            return;
+        }
+
+        boolean found = false;
+        for (Student user : users) {
+            if (user.studentId() == targetId) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("User ID " + targetId + " does not exist. Update cancelled.");
+            return;
+        }
+
+        if (targetId == currentAdmin.studentId()) {
+            System.out.println("WARNING: Modifying the currently active admin account is restricted.");
+            return;
+        }
+
+        String newRole = readValidRole();
+        if (newRole == null) {
+            System.out.println("Update cancelled.");
+            return;
+        }
+
+        String newStatus = readValidStatus();
+        if (newStatus == null) {
+            System.out.println("Update cancelled.");
+            return;
+        }
+
+        if (studentDao.updateUserRoleAndStatus(targetId, newRole, newStatus)) {
+            System.out.println("✅ User ID " + targetId + " updated: role " + newRole + ", status " + newStatus + ".");
+            java.time.LocalDateTime now = java.time.LocalDateTime.now();
+            activityLogDao.logActivity(currentAdmin.studentId(), "UPDATE_USER",
+                    "Updated user ID " + targetId + ": role " + newRole + ", status " + newStatus,
+                    now.toLocalDate().toString(), now.toLocalTime().truncatedTo(java.time.temporal.ChronoUnit.SECONDS).toString());
+        } else {
+            System.out.println("❌ Failed to update user.");
+        }
+    }
+
     /** Shows the full profile of one selected user. */
     private void viewUserProfile() {
-        System.out.println("\n--- VIEW USER PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("            VIEW USER PROFILE            ");
+        System.out.println("=========================================");
         List<Student> users = studentDao.getAllUsers();
 
         if (users.isEmpty()) {
@@ -468,7 +601,9 @@ public class AdminMenu {
     private void groupManagementMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- STUDY GROUP MANAGEMENT ---");
+            System.out.println("\n=========================================");
+            System.out.println("          STUDY GROUP MANAGEMENT         ");
+            System.out.println("=========================================");
             System.out.println("[1] View All Study Groups");
             System.out.println("[2] Update Group Status");
             System.out.println("[3] Delete Study Group");
@@ -487,7 +622,9 @@ public class AdminMenu {
     }
 
     private void viewAllGroups() {
-        System.out.println("\n--- ALL STUDY GROUPS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             ALL STUDY GROUPS            ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getAllGroups();
 
         if (groups.isEmpty()) {
@@ -499,7 +636,9 @@ public class AdminMenu {
     }
 
     private void updateGroupStatus() {
-        System.out.println("\n--- UPDATE GROUP STATUS ---");
+        System.out.println("\n=========================================");
+        System.out.println("           UPDATE GROUP STATUS           ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getAllGroups();
 
         if (groups.isEmpty()) {
@@ -555,7 +694,9 @@ public class AdminMenu {
     }
 
     private void deleteGroup() {
-        System.out.println("\n--- DELETE STUDY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("            DELETE STUDY GROUP           ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getAllGroups();
 
         if (groups.isEmpty()) {
@@ -603,7 +744,9 @@ public class AdminMenu {
     private void membershipManagementMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- GROUP MEMBERSHIP MANAGEMENT ---");
+            System.out.println("\n=========================================");
+            System.out.println("       GROUP MEMBERSHIP MANAGEMENT       ");
+            System.out.println("=========================================");
             System.out.println("[1] View Memberships by Group");
             System.out.println("[2] Remove Member from Group");
             System.out.println("[3] Back");
@@ -620,7 +763,9 @@ public class AdminMenu {
     }
 
     private void viewMembershipsByGroup() {
-        System.out.println("\n--- VIEW MEMBERSHIPS BY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("        VIEW MEMBERSHIPS BY GROUP        ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getAllGroups();
 
         if (groups.isEmpty()) {
@@ -670,7 +815,9 @@ public class AdminMenu {
     }
 
     private void adminRemoveMember() {
-        System.out.println("\n--- REMOVE MEMBER FROM GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("         REMOVE MEMBER FROM GROUP        ");
+        System.out.println("=========================================");
         System.out.print("Enter Group ID (0 to cancel): ");
         String input = scanner.nextLine().trim();
         if (input.isEmpty() || input.equals("0")) {
@@ -717,7 +864,9 @@ public class AdminMenu {
     private void sessionManagementMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- STUDY SESSION MANAGEMENT ---");
+            System.out.println("\n=========================================");
+            System.out.println("         STUDY SESSION MANAGEMENT        ");
+            System.out.println("=========================================");
             System.out.println("[1] View All Sessions");
             System.out.println("[2] Update Session Status");
             System.out.println("[3] Delete Session");
@@ -736,7 +885,9 @@ public class AdminMenu {
     }
 
     private void viewAllSessions() {
-        System.out.println("\n--- ALL STUDY SESSIONS ---");
+        System.out.println("\n=========================================");
+        System.out.println("            ALL STUDY SESSIONS           ");
+        System.out.println("=========================================");
         List<StudySession> sessions = sessionDao.getAllSessions();
 
         if (sessions.isEmpty()) {
@@ -764,7 +915,9 @@ public class AdminMenu {
     }
 
     private void adminUpdateSessionStatus() {
-        System.out.println("\n--- UPDATE SESSION STATUS ---");
+        System.out.println("\n=========================================");
+        System.out.println("          UPDATE SESSION STATUS          ");
+        System.out.println("=========================================");
         System.out.print("Enter Session ID (0 to cancel): ");
         String input = scanner.nextLine().trim();
         if (input.isEmpty() || input.equals("0")) {
@@ -813,7 +966,9 @@ public class AdminMenu {
     }
 
     private void adminDeleteSession() {
-        System.out.println("\n--- DELETE SESSION ---");
+        System.out.println("\n=========================================");
+        System.out.println("              DELETE SESSION             ");
+        System.out.println("=========================================");
         System.out.print("Enter Session ID to delete (0 to cancel): ");
         String input = scanner.nextLine().trim();
         if (input.isEmpty() || input.equals("0")) {
@@ -845,7 +1000,9 @@ public class AdminMenu {
     private void summaryReports() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- SUMMARY REPORTS ---");
+            System.out.println("\n=========================================");
+            System.out.println("             SUMMARY REPORTS             ");
+            System.out.println("=========================================");
             System.out.println("[1] View Full Study Group Activity Report");
             System.out.println("[2] User Statistics");
             System.out.println("[3] Group Statistics");
@@ -870,7 +1027,9 @@ public class AdminMenu {
     }
 
     private void userStatistics() {
-        System.out.println("\n--- USER STATISTICS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             USER STATISTICS             ");
+        System.out.println("=========================================");
         List<Student> allUsers = studentDao.getAllUsers();
         List<Student> pendingUsers = studentDao.getPendingUsers();
 
@@ -887,7 +1046,9 @@ public class AdminMenu {
     }
 
     private void groupStatistics() {
-        System.out.println("\n--- GROUP STATISTICS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             GROUP STATISTICS            ");
+        System.out.println("=========================================");
         List<StudyGroup> allGroups = studyGroupDao.getAllGroups();
 
         long activeCount = allGroups.stream().filter(g -> "ACTIVE".equalsIgnoreCase(g.status())).count();
@@ -907,7 +1068,9 @@ public class AdminMenu {
     }
 
     private void sessionStatistics() {
-        System.out.println("\n--- SESSION STATISTICS ---");
+        System.out.println("\n=========================================");
+        System.out.println("            SESSION STATISTICS           ");
+        System.out.println("=========================================");
         List<StudySession> allSessions = sessionDao.getAllSessions();
 
         long scheduled = allSessions.stream().filter(s -> "SCHEDULED".equalsIgnoreCase(s.status())).count();
@@ -923,7 +1086,9 @@ public class AdminMenu {
     }
 
     private void activitySummary() {
-        System.out.println("\n--- ACTIVITY SUMMARY ---");
+        System.out.println("\n=========================================");
+        System.out.println("             ACTIVITY SUMMARY            ");
+        System.out.println("=========================================");
         List<ActivityLogDao.ActionCount> summary = activityLogDao.getActionSummary();
 
         if (summary.isEmpty()) {
@@ -1027,7 +1192,9 @@ public class AdminMenu {
 
     /** Prints the full Study Group Activity Report to the console. */
     private void viewFullReport() {
-        System.out.println("\n--- STUDY GROUP ACTIVITY REPORT ---");
+        System.out.println("\n=========================================");
+        System.out.println("       STUDY GROUP ACTIVITY REPORT       ");
+        System.out.println("=========================================");
         System.out.println("Generated: " + java.time.LocalDateTime.now());
         for (com.student_study_group_finder.report.ReportExporter.Section section : buildActivityReport()) {
             System.out.println("\n" + section.title());
@@ -1039,7 +1206,9 @@ public class AdminMenu {
 
     /** Exports the Study Group Activity Report in CSV, PDF, or XLSX format. */
     private void exportActivityReport() {
-        System.out.println("\n--- EXPORT STUDY GROUP ACTIVITY REPORT ---");
+        System.out.println("\n=========================================");
+        System.out.println("    EXPORT STUDY GROUP ACTIVITY REPORT   ");
+        System.out.println("=========================================");
         System.out.println("Select export format:");
         System.out.println("[1] CSV");
         System.out.println("[2] PDF");
@@ -1089,7 +1258,9 @@ public class AdminMenu {
     private void activityLogsMenu() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- ACTIVITY LOGS ---");
+            System.out.println("\n=========================================");
+            System.out.println("              ACTIVITY LOGS              ");
+            System.out.println("=========================================");
             System.out.println("[1] View All Activity Logs");
             System.out.println("[2] Clear All Logs");
             System.out.println("[3] Back");
@@ -1106,7 +1277,9 @@ public class AdminMenu {
     }
 
     private void viewAllLogs() {
-        System.out.println("\n--- ALL ACTIVITY LOGS ---");
+        System.out.println("\n=========================================");
+        System.out.println("            ALL ACTIVITY LOGS            ");
+        System.out.println("=========================================");
         List<ActivityLog> logs = activityLogDao.getAllLogs();
 
         if (logs.isEmpty()) {

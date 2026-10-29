@@ -65,7 +65,9 @@ public class StudentMenu {
 
     /** View and manage personal profile. */
     private void viewManageProfile() {
-        System.out.println("\n--- MY PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("                MY PROFILE               ");
+        System.out.println("=========================================");
         String course = student.course() != null ? truncate(student.course(), 30) : "N/A";
         String yearLevel = student.yearLevel() != null ? String.valueOf(student.yearLevel()) : "N/A";
         // Layout help: "%-14s" = text column 14 wide ("%-30s" = 30 wide).
@@ -100,7 +102,9 @@ public class StudentMenu {
 
     /** Changes the account password after confirming the current one. */
     private void changePassword() {
-        System.out.println("\n--- CHANGE PASSWORD ---");
+        System.out.println("\n=========================================");
+        System.out.println("             CHANGE PASSWORD             ");
+        System.out.println("=========================================");
         System.out.print("Current Password: ");
         String current = scanner.nextLine().trim();
         if (!studentDao.checkPassword(student.studentId(), current)) {
@@ -134,7 +138,9 @@ public class StudentMenu {
 
     /** Update personal profile information. */
     private void updateProfile() {
-        System.out.println("\n--- UPDATE PROFILE ---");
+        System.out.println("\n=========================================");
+        System.out.println("              UPDATE PROFILE             ");
+        System.out.println("=========================================");
         System.out.print("New Full Name (or press Enter to keep): ");
         String newName = scanner.nextLine().trim();
         if (newName.isEmpty()) newName = student.fullName();
@@ -170,7 +176,9 @@ public class StudentMenu {
     private void browseAndJoinGroups() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- BROWSE & JOIN STUDY GROUPS ---");
+            System.out.println("\n=========================================");
+            System.out.println("        BROWSE & JOIN STUDY GROUPS       ");
+            System.out.println("=========================================");
             System.out.println("[1] View All Study Groups");
             System.out.println("[2] Search Study Groups");
             System.out.println("[3] Join a Study Group");
@@ -192,7 +200,9 @@ public class StudentMenu {
 
     /** View all active study groups. */
     private void viewAllGroups() {
-        System.out.println("\n--- ALL STUDY GROUPS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             ALL STUDY GROUPS            ");
+        System.out.println("=========================================");
         List<StudyGroup> groups = studyGroupDao.getActiveGroups();
 
         if (groups.isEmpty()) {
@@ -205,7 +215,9 @@ public class StudentMenu {
 
     /** Search study groups by keyword. */
     private void searchGroups() {
-        System.out.println("\n--- SEARCH STUDY GROUPS ---");
+        System.out.println("\n=========================================");
+        System.out.println("           SEARCH STUDY GROUPS           ");
+        System.out.println("=========================================");
         System.out.print("Enter search keyword (subject or group name): ");
         String query = scanner.nextLine().trim();
 
@@ -227,7 +239,9 @@ public class StudentMenu {
 
     /** Shows full information for one group so students can decide before joining. */
     private void viewGroupDetails() {
-        System.out.println("\n--- STUDY GROUP DETAILS ---");
+        System.out.println("\n=========================================");
+        System.out.println("           STUDY GROUP DETAILS           ");
+        System.out.println("=========================================");
         System.out.print("Enter Group ID (0 to cancel): ");
         String input = scanner.nextLine().trim();
 
@@ -274,7 +288,9 @@ public class StudentMenu {
     private void myJoinedGroups() {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- MY JOINED GROUPS ---");
+            System.out.println("\n=========================================");
+            System.out.println("             MY JOINED GROUPS            ");
+            System.out.println("=========================================");
             System.out.println("[1] View My Groups");
             System.out.println("[2] Leave a Study Group");
             System.out.println("[3] View Group Members");
@@ -294,7 +310,9 @@ public class StudentMenu {
 
     /** View groups the student has joined. */
     private void viewMyGroups() {
-        System.out.println("\n--- MY JOINED GROUPS ---");
+        System.out.println("\n=========================================");
+        System.out.println("             MY JOINED GROUPS            ");
+        System.out.println("=========================================");
         List<GroupMembership> memberships = membershipDao.getStudentGroups(student.studentId());
 
         if (memberships.isEmpty()) {
@@ -324,7 +342,9 @@ public class StudentMenu {
 
     /** Join a study group by ID. */
     private void joinGroup() {
-        System.out.println("\n--- JOIN A STUDY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("            JOIN A STUDY GROUP           ");
+        System.out.println("=========================================");
         System.out.print("Enter Group ID to join (0 to cancel): ");
         String input = scanner.nextLine().trim();
 
@@ -379,7 +399,9 @@ public class StudentMenu {
 
     /** Leave a study group. */
     private void leaveGroup() {
-        System.out.println("\n--- LEAVE A STUDY GROUP ---");
+        System.out.println("\n=========================================");
+        System.out.println("           LEAVE A STUDY GROUP           ");
+        System.out.println("=========================================");
         List<GroupMembership> memberships = membershipDao.getStudentGroups(student.studentId());
 
         if (memberships.isEmpty()) {
@@ -431,7 +453,9 @@ public class StudentMenu {
 
     /** View members of a specific group. */
     private void viewGroupMembers() {
-        System.out.println("\n--- VIEW GROUP MEMBERS ---");
+        System.out.println("\n=========================================");
+        System.out.println("            VIEW GROUP MEMBERS           ");
+        System.out.println("=========================================");
         System.out.print("Enter Group ID (0 to cancel): ");
         String input = scanner.nextLine().trim();
 
@@ -482,7 +506,9 @@ public class StudentMenu {
 
     /** View scheduled study sessions for groups the student is in. */
     private void viewSessions() {
-        System.out.println("\n--- SCHEDULED STUDY SESSIONS ---");
+        System.out.println("\n=========================================");
+        System.out.println("         SCHEDULED STUDY SESSIONS        ");
+        System.out.println("=========================================");
         List<GroupMembership> memberships = membershipDao.getStudentGroups(student.studentId());
 
         if (memberships.isEmpty()) {

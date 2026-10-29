@@ -267,6 +267,21 @@ public class StudentDao {
         }
     }
 
+    /** Updates a user's role and account status. Inputs are uppercased before saving. */
+    public boolean updateUserRoleAndStatus(int userId, String newRole, String newStatus) {
+        String sql = "UPDATE students SET role = ?, account_status = ? WHERE student_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newRole == null ? null : newRole.toUpperCase());
+            ps.setString(2, newStatus == null ? null : newStatus.toUpperCase());
+            ps.setInt(3, userId);
+            return ps.executeUpdate() == 1;
+        } catch (SQLException e) {
+            System.out.println("User update failed: " + e.getMessage());
+            return false;
+        }
+    }
+
     /** Returns a single user by ID. */
     public Student getUserById(int userId) {
         String sql = """
